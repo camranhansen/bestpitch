@@ -238,18 +238,18 @@ function updatePitch( time ) {
 		// detuneAmount.innerText = "--";
  	} else {
 	 	// detectorElem.className = "confident";
-	 	console.log(ac);
+	 	console.log(ac); // this is for debugging
 
 	 	if (ac > 1056) {//880 + or minus 20 percent is good, else 
-	 		console.log("pull out");
+	 		console.log("1");
 	 	}
 
 	 	else if (ac < 704) {
-	 		console.log("push in");
+	 		console.log("2");
 	 	}
 
 	 	else{
-	 		console.log("goood!!!");
+	 		console.log("0");
 	 	}
 	}
 

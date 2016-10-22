@@ -1,4 +1,4 @@
-##hackmyrecorder.tech##
+##recorderwith.tech##
 Automatically tunes your (soprano) recorder.
 
 Tune to A5 (aka 880 HZ)

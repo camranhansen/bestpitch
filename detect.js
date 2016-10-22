@@ -242,14 +242,16 @@ function updatePitch( time ) {
 
 	 	if (ac > 1056) {//880 + or minus 20 percent is good, else 
 	 		// console.log("1");
+	 		document.getElementById("demo").innerHTML = "Push in!";
+
 	 	}
 
 	 	else if (ac < 704) {
-	 		// console.log("2");
+	 		document.getElementById("demo").innerHTML = "Pull out!";
 	 	}
 
 	 	else{
-	 		// console.log("0");
+	 		document.getElementById("demo").innerHTML = "IN TUNE!";
 	 	}
 	}
 

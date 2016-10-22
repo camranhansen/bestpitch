@@ -242,12 +242,12 @@ function updatePitch( time ) {
 
 	 	if (ac > 1056) {//880 + or minus 20 percent is good, else 
 	 		// console.log("1");
-	 		document.getElementById("demo").innerHTML = "Push in!";
+	 		document.getElementById("demo").innerHTML = "Contract Slide!";
 
 	 	}
 
 	 	else if (ac < 704) {
-	 		document.getElementById("demo").innerHTML = "Pull out!";
+	 		document.getElementById("demo").innerHTML = "Expand Slide!";
 	 	}
 
 	 	else{

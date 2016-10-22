@@ -205,29 +205,29 @@ function updatePitch( time ) {
 	var ac = autoCorrelate( buf, audioContext.sampleRate );
 	// TODO: Paint confidence meter on canvasElem here.
 
-	// if (DEBUGCANVAS) {  // This draws the current waveform, useful for debugging
-	// 	waveCanvas.clearRect(0,0,512,256);
-	// 	waveCanvas.strokeStyle = "red";
-	// 	waveCanvas.beginPath();
-	// 	waveCanvas.moveTo(0,0);
-	// 	waveCanvas.lineTo(0,256);
-	// 	waveCanvas.moveTo(128,0);
-	// 	waveCanvas.lineTo(128,256);
-	// 	waveCanvas.moveTo(256,0);
-	// 	waveCanvas.lineTo(256,256);
-	// 	waveCanvas.moveTo(384,0);
-	// 	waveCanvas.lineTo(384,256);
-	// 	waveCanvas.moveTo(512,0);
-	// 	waveCanvas.lineTo(512,256);
-	// 	waveCanvas.stroke();
-	// 	waveCanvas.strokeStyle = "black";
-	// 	waveCanvas.beginPath();
-	// 	waveCanvas.moveTo(0,buf[0]);
-	// 	for (var i=1;i<512;i++) {
-	// 		waveCanvas.lineTo(i,128+(buf[i]*128));
-	// 	}
-	// 	waveCanvas.stroke();
-	// }
+	if (DEBUGCANVAS) {  // This draws the current waveform, useful for debugging
+		waveCanvas.clearRect(0,0,512,256);
+		waveCanvas.strokeStyle = "red";
+		waveCanvas.beginPath();
+		waveCanvas.moveTo(0,0);
+		waveCanvas.lineTo(0,256);
+		waveCanvas.moveTo(128,0);
+		waveCanvas.lineTo(128,256);
+		waveCanvas.moveTo(256,0);
+		waveCanvas.lineTo(256,256);
+		waveCanvas.moveTo(384,0);
+		waveCanvas.lineTo(384,256);
+		waveCanvas.moveTo(512,0);
+		waveCanvas.lineTo(512,256);
+		waveCanvas.stroke();
+		waveCanvas.strokeStyle = "black";
+		waveCanvas.beginPath();
+		waveCanvas.moveTo(0,buf[0]);
+		for (var i=1;i<512;i++) {
+			waveCanvas.lineTo(i,128+(buf[i]*128));
+		}
+		waveCanvas.stroke();
+	}
 
  	if (ac == -1) {
  		// console.log("Nothing");
@@ -241,15 +241,15 @@ function updatePitch( time ) {
 	 	console.log(ac); // this is for debugging
 
 	 	if (ac > 1056) {//880 + or minus 20 percent is good, else 
-	 		console.log("1");
+	 		// console.log("1");
 	 	}
 
 	 	else if (ac < 704) {
-	 		console.log("2");
+	 		// console.log("2");
 	 	}
 
 	 	else{
-	 		console.log("0");
+	 		// console.log("0");
 	 	}
 	}
 

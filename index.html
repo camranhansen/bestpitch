@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html class="full" lang="en">
-<!-- Make sure the <html> tag is set to the .full CSS class. Change the background image in the full.css file. -->
+<html lang="en">
 
 <head>
 
@@ -10,13 +9,20 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>HackMyRecorder</title>
+    <title>2 Col Portfolio - Start Bootstrap Template</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="software/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom CSS -->
-    <link href="software/css/full.css" rel="stylesheet">
+    <link href="software/css/2-col-portfolio.css" rel="stylesheet">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
 
 </head>
 
@@ -24,33 +30,100 @@
 
     <!-- Navigation -->
 <!--     <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-        <div class="container">
-             <div class="navbar-header">
+ -->        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+<!--             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
                     <span class="sr-only">Toggle navigation</span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#">HackMyRecorder</a>
-            </div> 
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <a class="navbar-brand" href="#">Start Bootstrap</a>
+            </div> -->
+            <!-- Collect the nav links, forms, and other content for toggling -->
+<!--             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
                     <li>
-                        <a href="#"></a>
+                        <a href="#">About</a>
                     </li>
                     <li>
-                        <a href="#"></a>
+                        <a href="#">Services</a>
                     </li>
                     <li>
-                        <a href="#"></a>
+                        <a href="#">Contact</a>
                     </li>
                 </ul>
-            </div> 
-        </div>
-    </nav> -->
+            </div>
+        </div> -->
+        <!-- /.container -->
+    <!-- </nav> -->
 
-    <!-- Put your page content here! -->
+    <!-- Page Content -->
+    <div class="container" align="center">
+
+        <!-- Page Header -->
+        <div class="row">
+            <div class="col-lg-12">
+            <center>
+                <h1 class="page-header">HackMyRecorder </h1>
+                 <h2>The Best Way To Tune The Common Recorder.</h2>
+                 <br>
+                 </center>
+            </div>
+        </div>
+
+
+        <footer>
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1> LIVE FEEDBACK</h1>
+                    <p>Live Feedback</p>
+                    <br>
+                    <button onclick="toggleLiveInput()">start recording</button>
+                    <br>
+                    <canvas id="waveform" width="512" height="256"></canvas>
+                    <p> With Hack My Recodrer, nothing stands between you and mastering one of the 
+                    most well respected instruments in the world. 
+                </div>
+                <div class="col-lg-12">
+                    <h4> The Recorder: Reimagined  </h4>
+                    <p> HackMyRecorder has fully redesigned the recoder allowing the instrument 
+                    to adapt and adjust to your unique style of playing</p>
+                    <br>
+                    <img class="img-responsive" src="software/css/websplash.png">
+                    <br>
+                    <p> With Hack My Recodrer, nothing stands between you and mastering one of the 
+                    most well respected instruments in the world. 
+                </div>
+            </div>
+            <!-- /.row -->
+        </footer>
+
+        <center>
+            <div class="col-md-6 portfolio-item" align="center">
+            <h1></h1>
+            </div>
+        </center>
+
+
+
+
+        <!-- Footer -->
+        <footer>
+            <div class="row">
+                <div class="col-lg-12">
+                    <p>Copyright &copy; HackMyRecorder</p>
+                </div>
+            </div>
+            <!-- /.row -->
+        </footer>
+        </center>
+
+    </div>
+    <!-- /.container -->
+
+    <script src="detect.js"></script>
 
     <!-- jQuery -->
     <script src="js/jquery.js"></script>

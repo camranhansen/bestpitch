@@ -1,14 +1,18 @@
 /*
 The MIT License (MIT)
+
 Copyright (c) 2014 Chris Wilson
+
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
 in the Software without restriction, including without limitation the rights
 to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 copies of the Software, and to permit persons to whom the Software is
 furnished to do so, subject to the following conditions:
+
 The above copyright notice and this permission notice shall be included in all
 copies or substantial portions of the Software.
+
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -114,33 +118,6 @@ function gotStream(stream) {
     mediaStreamSource.connect( analyser );
     updatePitch();
 }
-
-function toggleOscillator() {
-    if (isPlaying) {
-        //stop playing and return
-        sourceNode.stop( 0 );
-        sourceNode = null;
-        analyser = null;
-        isPlaying = false;
-		if (!window.cancelAnimationFrame)
-			window.cancelAnimationFrame = window.webkitCancelAnimationFrame;
-        window.cancelAnimationFrame( rafID );
-        return "play oscillator";
-    }
-    sourceNode = audioContext.createOscillator();
-
-    analyser = audioContext.createAnalyser();
-    analyser.fftSize = 2048;
-    sourceNode.connect( analyser );
-    analyser.connect( audioContext.destination );
-    sourceNode.start(0);
-    isPlaying = true;
-    isLiveInput = false;
-    updatePitch();
-
-    return "stop";
-}
-
 function toggleLiveInput() {
     if (isPlaying) {
         //stop playing and return
@@ -166,34 +143,7 @@ function toggleLiveInput() {
         }, gotStream);
 }
 
-function togglePlayback() {
-    if (isPlaying) {
-        //stop playing and return
-        sourceNode.stop( 0 );
-        sourceNode = null;
-        analyser = null;
-        isPlaying = false;
-		if (!window.cancelAnimationFrame)
-			window.cancelAnimationFrame = window.webkitCancelAnimationFrame;
-        window.cancelAnimationFrame( rafID );
-        return "start";
-    }
 
-    sourceNode = audioContext.createBufferSource();
-    sourceNode.buffer = theBuffer;
-    sourceNode.loop = true;
-
-    analyser = audioContext.createAnalyser();
-    analyser.fftSize = 2048;
-    sourceNode.connect( analyser );
-    analyser.connect( audioContext.destination );
-    sourceNode.start( 0 );
-    isPlaying = true;
-    isLiveInput = false;
-    updatePitch();
-
-    return "stop";
-}
 
 var rafID = null;
 var tracks = null;
@@ -214,38 +164,6 @@ function frequencyFromNoteNumber( note ) {
 function centsOffFromPitch( frequency, note ) {
 	return Math.floor( 1200 * Math.log( frequency / frequencyFromNoteNumber( note ))/Math.log(2) );
 }
-
-// this is a float version of the algorithm below - but it's not currently used.
-/*
-function autoCorrelateFloat( buf, sampleRate ) {
-	var MIN_SAMPLES = 4;	// corresponds to an 11kHz signal
-	var MAX_SAMPLES = 1000; // corresponds to a 44Hz signal
-	var SIZE = 1000;
-	var best_offset = -1;
-	var best_correlation = 0;
-	var rms = 0;
-	if (buf.length < (SIZE + MAX_SAMPLES - MIN_SAMPLES))
-		return -1;  // Not enough data
-	for (var i=0;i<SIZE;i++)
-		rms += buf[i]*buf[i];
-	rms = Math.sqrt(rms/SIZE);
-	for (var offset = MIN_SAMPLES; offset <= MAX_SAMPLES; offset++) {
-		var correlation = 0;
-		for (var i=0; i<SIZE; i++) {
-			correlation += Math.abs(buf[i]-buf[i+offset]);
-		}
-		correlation = 1 - (correlation/SIZE);
-		if (correlation > best_correlation) {
-			best_correlation = correlation;
-			best_offset = offset;
-		}
-	}
-	if ((rms>0.1)&&(best_correlation > 0.1)) {
-		console.log("f = " + sampleRate/best_offset + "Hz (rms: " + rms + " confidence: " + best_correlation + ")");
-	}
-//	var best_frequency = sampleRate/best_offset;
-}
-*/
 
 var MIN_SAMPLES = 0;  // will be initialized when AudioContext is created.
 var GOOD_ENOUGH_CORRELATION = 0.9; // this is the "bar" for how close a correlation needs to be
@@ -311,54 +229,65 @@ function updatePitch( time ) {
 	var ac = autoCorrelate( buf, audioContext.sampleRate );
 	// TODO: Paint confidence meter on canvasElem here.
 
-	if (DEBUGCANVAS) {  // This draws the current waveform, useful for debugging
-		waveCanvas.clearRect(0,0,512,256);
-		waveCanvas.strokeStyle = "red";
-		waveCanvas.beginPath();
-		waveCanvas.moveTo(0,0);
-		waveCanvas.lineTo(0,256);
-		waveCanvas.moveTo(128,0);
-		waveCanvas.lineTo(128,256);
-		waveCanvas.moveTo(256,0);
-		waveCanvas.lineTo(256,256);
-		waveCanvas.moveTo(384,0);
-		waveCanvas.lineTo(384,256);
-		waveCanvas.moveTo(512,0);
-		waveCanvas.lineTo(512,256);
-		waveCanvas.stroke();
-		waveCanvas.strokeStyle = "black";
-		waveCanvas.beginPath();
-		waveCanvas.moveTo(0,buf[0]);
-		for (var i=1;i<512;i++) {
-			waveCanvas.lineTo(i,128+(buf[i]*128));
-		}
-		waveCanvas.stroke();
-	}
+	// if (DEBUGCANVAS) {  // This draws the current waveform, useful for debugging
+	// 	waveCanvas.clearRect(0,0,512,256);
+	// 	waveCanvas.strokeStyle = "red";
+	// 	waveCanvas.beginPath();
+	// 	waveCanvas.moveTo(0,0);
+	// 	waveCanvas.lineTo(0,256);
+	// 	waveCanvas.moveTo(128,0);
+	// 	waveCanvas.lineTo(128,256);
+	// 	waveCanvas.moveTo(256,0);
+	// 	waveCanvas.lineTo(256,256);
+	// 	waveCanvas.moveTo(384,0);
+	// 	waveCanvas.lineTo(384,256);
+	// 	waveCanvas.moveTo(512,0);
+	// 	waveCanvas.lineTo(512,256);
+	// 	waveCanvas.stroke();
+	// 	waveCanvas.strokeStyle = "black";
+	// 	waveCanvas.beginPath();
+	// 	waveCanvas.moveTo(0,buf[0]);
+	// 	for (var i=1;i<512;i++) {
+	// 		waveCanvas.lineTo(i,128+(buf[i]*128));
+	// 	}
+	// 	waveCanvas.stroke();
+	// }
 
  	if (ac == -1) {
- 		detectorElem.className = "vague";
-	 	pitchElem.innerText = "--";
-		noteElem.innerText = "-";
-		detuneElem.className = "";
-		detuneAmount.innerText = "--";
+ 		// console.log("Nothing");
+ 	// 	detectorElem.className = "vague";
+	 // 	pitchElem.innerText = "--";
+		// noteElem.innerText = "-";
+		// detuneElem.className = "";
+		// detuneAmount.innerText = "--";
  	} else {
-	 	detectorElem.className = "confident";
-	 	pitch = ac;
-	 	pitchElem.innerText = Math.round( pitch ) ;
-	 	var note =  noteFromPitch( pitch );
-		noteElem.innerHTML = noteStrings[note%12];
-		var detune = centsOffFromPitch( pitch, note );
-		if (detune == 0 ) {
-			detuneElem.className = "";
-			detuneAmount.innerHTML = "--";
-		} else {
-			if (detune < 0)
-				detuneElem.className = "flat";
-			else
-				detuneElem.className = "sharp";
-			detuneAmount.innerHTML = Math.abs( detune );
-		}
+	 	// detectorElem.className = "confident";
+	 	console.log(ac);
+	 	if(ac>(1056){
+	 		console.log("pull out");
+	 	}else if (ac<704) {
+	 		console.log("push in");
+	 	}else{
+	 		console.log("goood!!!");
+	 	}
+
+
+	 // 	pitchElem.innerText = Math.round( pitch ) ;
+	 // 	var note =  noteFromPitch( pitch );
+		// noteElem.innerHTML = noteStrings[note%12];
+		// var detune = centsOffFromPitch( pitch, note );
+		// if (detune == 0 ) {
+		// 	detuneElem.className = "";
+		// 	detuneAmount.innerHTML = "--";
+		// } else {
+		// 	if (detune < 0)
+		// 		detuneElem.className = "flat";
+		// 	else
+		// 		detuneElem.className = "sharp";
+		// 	detuneAmount.innerHTML = Math.abs( detune );
+		// }
 	}
+
 
 	if (!window.requestAnimationFrame)
 		window.requestAnimationFrame = window.webkitRequestAnimationFrame;

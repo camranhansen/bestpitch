@@ -1,60 +1,72 @@
-#include <Romeo_m.h>
-void setup(void)
-{ 
-     Romeo_m.Initialise();
-     Serial.begin(115200); //Set Serial Baud
-} 
-void loop(void)
-{ 
-  char val;
-  if(Serial.available()>0)
-    {  
-     val = Serial.read();
-     }
-      switch(val){
-            case 'a'://Go forward
-            Romeo_m.motorControl(Forward,200,Forward,200);
-            break;
-            case'b'://Go back
-            Romeo_m.motorControl(Reverse,100,Reverse,100);
-            break;
-            case'c'://Turn left
-            Romeo_m.motorControl(Forward,100,Reverse,100);
-            break;
-            case'd'://Turn right
-            Romeo_m.motorControl(Reverse,200,Forward,100);
-            break;
-            case'e'://Stop 
-            Romeo_m.motorStop();
-            break;
-            default: break;
-            }
-}
+#include <SoftwareSerial.h>
+#include "Arduino.h"
+#include "DFRobotRomeoBLEMini.h"
+DFRobotRomeoBLEMini myDFRobotRomeoBLEMini;
+int RedLedPin = 2;
+int GreenLedPin = 4;
+SoftwareSerial BT(10, 11); 
 
+int xpotPin = 0;  //set the port for x input设置模拟口0为X的信号输入端口
+int ypotPin = 1;  //set the port for y input设置模拟口1为Y的信号输入端口 
 
-
-
-
-
+int xval=0;    //set variable x,y value
+int yval=0;    //设置x,y轴变量
 
 void setup(){
-  Serial.begin(9600);
   pinMode(RedLedPin, OUTPUT);
   pinMode(GreenLedPin, OUTPUT);
+  Serial.begin(9600);
+  BT.begin(9600);
 }
 
 void RightPitch(){
   digitalWrite(RedLedPin, LOW);   
   digitalWrite(GreenLedPin, HIGH);
+  myDFRobotRomeoBLEMini.speed(0, 0);
 }
 
-void WrongPitch(){
+void HighPitch(){
   digitalWrite(RedLedPin, HIGH);   
   digitalWrite(GreenLedPin, LOW);
+  myDFRobotRomeoBLEMini.speed(150, 0); //extend for sharp
+
 }
 
-void loop(){
-               
+void LowPitch(){
+  digitalWrite(RedLedPin, HIGH);   
+  digitalWrite(GreenLedPin, LOW);
+  myDFRobotRomeoBLEMini.speed(-150, 0); //shorten for flat
+
 }
 
 
+
+void loop()
+{
+  xval = analogRead(xpotPin);   //xval equals to the x value from port 2变量为从0信号口读取到的数值
+  yval = analogRead(ypotPin);   //xval equals to the x value from port 1变量为从1信号口读取到的数值
+   
+  Serial.print("X=");      
+  Serial.print(xval);
+  Serial.print(",");
+  Serial.print("  Y=");    
+  Serial.print(yval);
+  Serial.println(",");
+  
+if(yval>1000)
+{
+  HighPitch();
+  Serial.print("right");
+}
+else if(yval<100)
+{
+  LowPitch();
+  Serial.print("left");
+}
+else
+{
+  RightPitch();
+  Serial.print("stay");
+}
+ 
+}
